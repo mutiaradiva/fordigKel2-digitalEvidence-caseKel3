@@ -15,8 +15,6 @@ Seluruh isi *flashdisk* disalin menjadi *forensic image* dengan format **.E01** 
 
 Setelah *file image* `.E01` berhasil dibuat, langkah selanjutnya adalah memuatnya ke dalam aplikasi forensik **Autopsy** untuk membedah struktur sistem filenya (Win95 FAT32).
 
-Pada tahap awal eksplorasi, sempat terjadi kendala teknis di mana daftar file tidak muncul di layar. Hal ini berhasil diatasi dengan melakukan pengaturan ulang tata letak (*Window > Reset Windows*) agar panel *Result Viewer* kembali tampil.
-
 Fokus penelusuran diarahkan pada *root directory* dari partisi utama (`vol2`). Di lokasi inilah ditemukan sampel *malware* utama yang dieksekusi saat USB dicolokkan:
 
 <img width="844" height="438" alt="image" src="https://github.com/user-attachments/assets/2507942f-7994-4406-bb63-90f1b4334c0e" />
@@ -54,9 +52,9 @@ Melalui penelusuran artefak yang tersimpan di dalam *flashdisk*, perilaku operas
 
 Berdasarkan log yang ditemukan, *malware* gagal menuliskan *flag* ke dalam *flashdisk* (kemungkinan tertimpa atau terjadi *error* pada `flag_obfuscated.txt`). Oleh karena itu, *flag* harus ditarik langsung dari dalam *source code* *malware* utamanya.
 
-File `combined_v2_gui.exe` diekstrak (*Extract File*) dari Autopsy dan dipindahkan ke dalam *environment* terminal Linux (Ubuntu Multipass). Karena format pasti dari *flag* tidak diketahui sejak awal, pencarian difokuskan menggunakan parameter kurung kurawal `{ }` yang menjadi standar umum *flag* CTF.
+File `combined_v2_gui.exe` diekstrak (*Extract File*) dari Autopsy dan dipindahkan ke dalam *environment* terminal Linux (Ubuntu). Karena format pasti dari *flag* tidak diketahui sejak awal, pencarian difokuskan menggunakan parameter kurung kurawal `{ }` yang menjadi standar umum *flag* CTF.
 
-Eksekusi perintah menggunakan *Regular Expression* (RegEx):
+Eksekusi perintah:
 
 ```bash
 strings combined_v2_gui.exe | grep "{.*}"
@@ -65,7 +63,7 @@ strings combined_v2_gui.exe | grep "{.*}"
 
 ### Kesimpulan & Flag
 
-Melalui metode analisis statis (*strings extraction*) pada berkas binari, *flag* yang disisipkan secara permanen (*hardcoded*) di dalam program berhasil ditemukan tanpa perlu mengeksekusi *malware* tersebut.
+Melalui *strings extraction* pada file .exe, *flag* yang disisipkan secara permanen (*hardcoded*) di dalam program berhasil ditemukan tanpa perlu mengeksekusi *malware* tersebut.
 
 **FLAG RECOVERED:**
 `FORDIG{c0ngr4tul4tI0nz_d1d_y0u_f1nd_m3?_w3ll_g00d_j0b_k3l0mp0k-3_gr33t1ng5_fr0m_m00nspectre}`
